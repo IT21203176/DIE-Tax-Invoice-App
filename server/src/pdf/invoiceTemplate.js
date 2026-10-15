@@ -115,13 +115,13 @@ export function renderInvoiceHtml(invoice) {
   table { width: 100%; border-collapse: collapse; }
   .value { text-transform: uppercase; }
 
-  .header td { padding: 2px 0; vertical-align: top; }
-  .header .label { width: 20%; }
-  .header .colon { width: 2%; }
-  .header .val { width: 28%; padding-right: 8px; }
+  /* Fixed layout keeps the supplier/purchaser halves equal; long unbroken text wraps inside its cell. */
+  .header { table-layout: fixed; }
+  .header td { padding: 2px 0; vertical-align: top; overflow-wrap: anywhere; }
+  .header .val { padding-right: 12px; }
   .header .section-title { text-decoration: underline; padding-top: 6px; }
   .header .party td { padding: 6px 0; }
-  .header .party .val { padding-right: 8px; }
+  .header .party .val { padding-right: 12px; }
   .header .spacer td { height: 14px; padding: 0; }
 
   .items { margin-top: 18px; table-layout: fixed; }
@@ -138,7 +138,7 @@ export function renderInvoiceHtml(invoice) {
   .item-row { page-break-inside: avoid; }
 
   .spec { width: 100%; }
-  .spec td { border: 1px solid #000; padding: 2px 4px; height: 21px; vertical-align: middle; }
+  .spec td { border: 1px solid #000; padding: 2px 4px; height: 21px; vertical-align: middle; overflow-wrap: anywhere; }
   .spec tr:first-child td { border-top: none; }
   .spec td:first-child { border-left: none; }
   .spec td:last-child { border-right: none; }
@@ -149,7 +149,7 @@ export function renderInvoiceHtml(invoice) {
   .totals .total-amount { text-align: right; padding-right: 6px; white-space: nowrap; }
   .totals .grand .total-amount { font-weight: bold; }
 
-  .summary { margin-top: 30px; font-size: 13px; }
+  .summary { margin-top: 30px; font-size: 13px; overflow-wrap: anywhere; }
   .summary div { margin-bottom: 16px; }
   .summary .label { display: inline-block; width: 20%; }
 
@@ -171,6 +171,10 @@ export function renderInvoiceHtml(invoice) {
   <h1>Tax Invoice</h1>
 
   <table class="header">
+    <colgroup>
+      <col style="width:20%"><col style="width:2%"><col style="width:28%">
+      <col style="width:20%"><col style="width:2%"><col style="width:28%">
+    </colgroup>
     <tr>
       <td class="label">DATE OF INVOICE</td><td class="colon">:</td>
       <td class="val">${formatDate(invoice.invoiceDate)}</td>

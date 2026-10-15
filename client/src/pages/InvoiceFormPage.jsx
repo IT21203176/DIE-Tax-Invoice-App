@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import {
   computeTotals,
@@ -9,8 +9,6 @@ import {
 import { api } from '../api.js';
 import Field from '../components/Field.jsx';
 import MoneyInput from '../components/MoneyInput.jsx';
-
-const SUPPLIER_STORAGE_KEY = 'taxInvoice.supplier';
 
 const PAYMENT_MODES = ['Cash', 'Cheque', 'Bank Transfer', 'Credit Card', 'Leasing', 'Other'];
 const VEHICLE_STATUSES = ['Brand New', 'Unregistered', 'Registered', 'Reconditioned'];
@@ -37,19 +35,11 @@ const today = () => new Date().toLocaleDateString('en-CA');
 const toDateInput = (value) => (value ? String(value).slice(0, 10) : '');
 const toMoneyInput = (value) => (value === '' || value == null ? '' : Number(value).toFixed(2));
 
-function loadSavedSupplier() {
-  try {
-    return { ...emptyParty(), ...JSON.parse(localStorage.getItem(SUPPLIER_STORAGE_KEY)) };
-  } catch {
-    return emptyParty();
-  }
-}
-
 function emptyInvoice() {
   return {
     invoiceNumber: '',
     invoiceDate: today(),
-    supplier: loadSavedSupplier(),
+    supplier: emptyParty(),
     purchaser: emptyParty(),
     deliveryDate: '',
     placeOfSupply: '',
@@ -91,6 +81,7 @@ export default function InvoiceFormPage() {
   const [loading, setLoading] = useState(isEdit);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
+  const supplierFilledRef = useRef(false);
 
   useEffect(() => {
     if (!isEdit) return undefined;
@@ -116,6 +107,16 @@ export default function InvoiceFormPage() {
         if (cancelled) return;
         setVatRate(defaults.vatRate);
         setNextNumber(defaults.nextInvoiceNumber);
+        if (defaults.supplier && !supplierFilledRef.current) {
+          supplierFilledRef.current = true;
+          // Only fill blanks so anything typed before the defaults arrived is kept.
+          setForm((prev) => ({
+            ...prev,
+            supplier: Object.fromEntries(
+              Object.entries(prev.supplier).map(([key, value]) => [key, value || defaults.supplier[key] || ''])
+            ),
+          }));
+        }
       })
       .catch(() => {});
     return () => {
@@ -162,7 +163,6 @@ export default function InvoiceFormPage() {
     setError(null);
     try {
       const saved = isEdit ? await api.updateInvoice(id, form) : await api.createInvoice(form);
-      localStorage.setItem(SUPPLIER_STORAGE_KEY, JSON.stringify(form.supplier));
       navigate(`/invoices/${saved._id}`);
     } catch (err) {
       setError(err);

@@ -26,7 +26,11 @@ invoicesRouter.param('id', (req, res, next, id) => {
 
 invoicesRouter.get('/defaults', async (req, res) => {
   const invoiceDate = req.query.invoiceDate ? new Date(req.query.invoiceDate) : new Date();
-  res.json({ nextInvoiceNumber: await previewNextInvoiceNumber(invoiceDate), vatRate: config.vatRate });
+  res.json({
+    nextInvoiceNumber: await previewNextInvoiceNumber(invoiceDate),
+    vatRate: config.vatRate,
+    supplier: config.defaultSupplier,
+  });
 });
 
 invoicesRouter.get('/', async (req, res) => {

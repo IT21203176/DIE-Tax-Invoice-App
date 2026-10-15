@@ -8,4 +8,10 @@ export const config = {
   vatRate: Number(process.env.VAT_RATE) || DEFAULT_VAT_RATE,
   corsOrigin: process.env.CORS_ORIGIN || 'http://localhost:5173',
   isProduction: process.env.NODE_ENV === 'production',
+  defaultSupplier: {
+    tin: process.env.SUPPLIER_TIN || '9336771507000',
+    name: process.env.SUPPLIER_NAME || 'DIASON IMPORTS & EXPORTS',
+    address: process.env.SUPPLIER_ADDRESS || '471/1A1, MAKOLA SOUTH, MAKOLA, SRI LANKA.',
+    telephone: process.env.SUPPLIER_TELEPHONE || '0772379052',
+  },
 };

@@ -105,6 +105,8 @@ textarea { resize: vertical; }
 .invoice-form .field-label { font-size: 0.8rem; font-weight: 500; color: var(--muted); }
 .invoice-form input, .invoice-form textarea { padding: 7px 10px; font-size: 0.92rem; border-radius: 5px; }
 .invoice-form input::placeholder, .invoice-form textarea::placeholder { color: #a0aab6; }
+.invoice-form input, .invoice-form textarea, .invoice-form select { background-color: #fffbe8; border-color: #ece3bf; }
+.invoice-form input:focus, .invoice-form textarea:focus { border-color: var(--primary); }
 
 .row { display: grid; gap: 0 14px; }
 .row-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -116,7 +118,7 @@ textarea { resize: vertical; }
 .vehicle + .vehicle { border-top: 1px solid var(--border); margin-top: 6px; padding-top: 8px; }
 .vehicle-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
 .invoice-form .vehicle-header h2 { margin: 0; }
-.invoice-form input.readonly { cursor: default; color: var(--text); }
+.invoice-form input.readonly { cursor: default; color: var(--text); background-color: #f1f5f9; border-color: var(--border); }
 .invoice-form input.readonly:focus { outline: none; border-color: var(--border); }
 .vehicle-header-right { display: flex; align-items: center; gap: 6px; font-size: 0.85rem; }
 .muted { color: var(--muted); }

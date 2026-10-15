@@ -295,25 +295,29 @@ export default function InvoiceFormPage() {
         </div>
 
         <aside className="card form-sidebar">
-          <h2>Totals &amp; payment</h2>
-          <dl className="summary-totals">
-            <div>
-              <dt>Total value of supply</dt>
-              <dd>{formatMoney(totals.totalValueOfSupply)}</dd>
-            </div>
-            <div>
-              <dt>VAT @ {vatRate}%</dt>
-              <dd>{formatMoney(totals.vatAmount)}</dd>
-            </div>
-          </dl>
-          <div className="grand-total">
-            <span className="grand-total-label">Total incl. VAT</span>
-            <span className="grand-total-value">
-              <small>Rs.</small>
-              {formatMoney(totals.totalAmountIncludingVat)}
-            </span>
+          <div>
+            <h2>Totals &amp; payment</h2>
+            <dl className="summary-totals">
+              <div>
+                <dt>Total value of supply</dt>
+                <dd>{formatMoney(totals.totalValueOfSupply)}</dd>
+              </div>
+              <div>
+                <dt>VAT @ {vatRate}%</dt>
+                <dd>{formatMoney(totals.vatAmount)}</dd>
+              </div>
+            </dl>
           </div>
-          <p className="amount-words">{totals.totalAmountInWords.toLowerCase()}</p>
+          <div>
+            <div className="grand-total">
+              <span className="grand-total-label">Total incl. VAT</span>
+              <span className="grand-total-value">
+                <small>Rs.</small>
+                {formatMoney(totals.totalAmountIncludingVat)}
+              </span>
+            </div>
+            <p className="amount-words">{totals.totalAmountInWords.toLowerCase()}</p>
+          </div>
 
           <Field label="Mode of payment" required>
             <select required value={form.paymentMode}
@@ -322,8 +326,8 @@ export default function InvoiceFormPage() {
               {paymentOptions.map((mode) => <option key={mode} value={mode}>{mode}</option>)}
             </select>
           </Field>
-          <Field label="Other information" className="grow">
-            <textarea rows={2} value={form.otherInformation}
+          <Field label="Other information">
+            <textarea rows={4} value={form.otherInformation}
               placeholder="Notes that should appear on the invoice"
               onChange={(e) => setField('otherInformation', e.target.value)} />
           </Field>

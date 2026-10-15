@@ -121,7 +121,7 @@ textarea { resize: vertical; }
 .vehicle-header-right { display: flex; align-items: center; gap: 6px; font-size: 0.85rem; }
 .muted { color: var(--muted); }
 
-.invoice-form .form-sidebar { display: flex; flex-direction: column; margin-bottom: 0; }
+.invoice-form .form-sidebar { display: flex; flex-direction: column; justify-content: space-between; gap: 6px; margin-bottom: 0; }
 .invoice-form .form-sidebar h2 { margin-bottom: 10px; }
 .summary-totals { margin: 0; }
 .summary-totals div {
@@ -148,7 +148,7 @@ textarea { resize: vertical; }
 .grand-total-label { font-weight: 700; font-size: 1rem; }
 .grand-total-value { font-weight: 800; font-size: 1.7rem; line-height: 1.1; font-variant-numeric: tabular-nums; }
 .grand-total-value small { font-size: 0.8rem; font-weight: 500; color: var(--muted); margin-right: 3px; }
-.amount-words { font-size: 0.85rem; color: var(--muted); margin: 4px 0 14px; }
+.amount-words { font-size: 0.85rem; color: var(--muted); margin: 4px 0 0; }
 .amount-words::first-letter { text-transform: uppercase; }
 
 .invoice-form select {
@@ -161,9 +161,9 @@ textarea { resize: vertical; }
 .invoice-form select option { color: var(--text); }
 .invoice-form select:focus { outline: 2px solid #93c5fd; border-color: var(--primary); }
 
-.form-sidebar .field.grow { flex: 1; }
-.form-sidebar .field.grow textarea { flex: 1; min-height: 60px; resize: none; }
-.form-sidebar .form-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 8px 0 0; }
+.invoice-form .form-sidebar .field { margin-bottom: 0; }
+.form-sidebar textarea { height: clamp(80px, 14vh, 130px); min-height: 60px; max-height: 180px; resize: vertical; }
+.form-sidebar .form-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 0; }
 .form-sidebar .form-actions .btn { padding: 10px 16px; }
 
 /* Short laptop screens (e.g. 1366x768): tighten vertical spacing so the form still fits without scrolling */
@@ -175,7 +175,6 @@ textarea { resize: vertical; }
   .invoice-form input, .invoice-form textarea, .invoice-form select { padding-top: 6px; padding-bottom: 6px; }
   .summary-totals div { padding: 5px 0; }
   .grand-total { padding-top: 8px; }
-  .amount-words { margin-bottom: 8px; }
 }
 
 /* Wide screens: stretch the form to the bottom of the window so both columns end on the same line */
@@ -201,6 +200,8 @@ textarea { resize: vertical; }
   .invoice-form .field-label { font-size: 0.9rem; }
   .invoice-form input, .invoice-form textarea, .invoice-form select { padding: 10px 12px; font-size: 1rem; }
   .vehicle-header-right, .summary-totals div { font-size: 1rem; }
+  .summary-totals div { padding: 12px 0; }
+  .invoice-form .form-sidebar h2 { margin-bottom: 14px; }
   .amount-words { font-size: 0.92rem; }
   .form-sidebar .form-actions .btn { padding: 12px 16px; font-size: 1rem; }
 }

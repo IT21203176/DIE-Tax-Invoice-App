@@ -121,6 +121,7 @@ export function renderInvoiceHtml(invoice) {
   .header .val { width: 28%; padding-right: 8px; }
   .header .section-title { text-decoration: underline; padding-top: 6px; }
   .header .middle td { vertical-align: middle; }
+  .header .party-row td { padding-top: 6px; padding-bottom: 6px; }
   .header .spacer td { height: 14px; padding: 0; }
 
   .items { margin-top: 18px; table-layout: fixed; }
@@ -181,19 +182,19 @@ export function renderInvoiceHtml(invoice) {
       <td colspan="3" class="section-title">SUPPLIER DETAILS:</td>
       <td colspan="3" class="section-title">PURCHASER DETAILS:</td>
     </tr>
-    <tr>
+    <tr class="party-row">
       <td class="label">TIN</td><td class="colon">:</td><td class="val value">${escapeHtml(supplier.tin)}</td>
       <td class="label">TIN</td><td class="colon">:</td><td class="val value">${escapeHtml(purchaser.tin)}</td>
     </tr>
-    <tr>
+    <tr class="party-row">
       <td class="label">NAME</td><td class="colon">:</td><td class="val value">${escapeHtml(supplier.name)}</td>
       <td class="label">NAME</td><td class="colon">:</td><td class="val value">${escapeHtml(purchaser.name)}</td>
     </tr>
-    <tr class="middle">
+    <tr class="party-row middle">
       <td class="label">ADDRESS</td><td class="colon">:</td><td class="val value">${multiline(supplier.address)}</td>
       <td class="label">ADDRESS</td><td class="colon">:</td><td class="val value">${multiline(purchaser.address)}</td>
     </tr>
-    <tr>
+    <tr class="party-row">
       <td class="label">TEL</td><td class="colon">:</td><td class="val value">${escapeHtml(supplier.telephone)}</td>
       <td class="label">TEL</td><td class="colon">:</td><td class="val value">${escapeHtml(purchaser.telephone)}</td>
     </tr>

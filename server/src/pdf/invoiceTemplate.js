@@ -1,9 +1,25 @@
 import { readFileSync } from 'node:fs';
 import { formatMoney } from '../../../shared/invoiceMath.js';
 
-const logoDataUri = `data:image/png;base64,${readFileSync(
-  new URL('./assets/diason-logo.png', import.meta.url)
-).toString('base64')}`;
+function assetDataUri(relativePath, mimeType) {
+  const data = readFileSync(new URL(`./assets/${relativePath}`, import.meta.url)).toString('base64');
+  return `data:${mimeType};base64,${data}`;
+}
+
+const logoDataUri = assetDataUri('diason-logo.png', 'image/png');
+
+// Tinos is metric-compatible with Times New Roman; embedding it keeps the layout identical
+// on servers (e.g. Vercel) that have no Times New Roman installed.
+const fontFaces = [400, 700]
+  .map(
+    (weight) => `@font-face {
+    font-family: 'Tinos';
+    font-style: normal;
+    font-weight: ${weight};
+    src: url(${assetDataUri(`fonts/tinos-latin-${weight}.woff2`, 'font/woff2')}) format('woff2');
+  }`
+  )
+  .join('\n  ');
 
 function escapeHtml(value) {
   return String(value ?? '')
@@ -79,10 +95,11 @@ export function renderInvoiceHtml(invoice) {
 <meta charset="utf-8">
 <title>Tax Invoice ${escapeHtml(invoice.invoiceNumber)}</title>
 <style>
+  ${fontFaces}
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
   body {
-    font-family: 'Times New Roman', Times, 'Liberation Serif', serif;
+    font-family: 'Tinos', 'Times New Roman', Times, serif;
     font-size: 12px;
     color: #000;
   }

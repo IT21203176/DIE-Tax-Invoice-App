@@ -9,9 +9,11 @@
     "start": "node --env-file-if-exists=.env src/index.js"
   },
   "dependencies": {
+    "@sparticuz/chromium": "^153.0.0",
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "mongoose": "^8.16.0",
-    "puppeteer": "^25.14.0"
+    "puppeteer": "^25.14.0",
+    "puppeteer-core": "~25.11.0"
   }
 }

@@ -34,12 +34,14 @@ function multiline(value) {
   return escapeHtml(value).replace(/\n/g, '<br>');
 }
 
-// Matches the M/D/YYYY style used on the approved invoice format, e.g. 6/20/2026.
+// DD/MM/YYYY, e.g. 20/06/2026.
 function formatDate(value) {
   if (!value) return '';
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return '';
-  return `${date.getUTCMonth() + 1}/${date.getUTCDate()}/${date.getUTCFullYear()}`;
+  const dd = String(date.getUTCDate()).padStart(2, '0');
+  const mm = String(date.getUTCMonth() + 1).padStart(2, '0');
+  return `${dd}/${mm}/${date.getUTCFullYear()}`;
 }
 
 function engineCapacityText(value) {

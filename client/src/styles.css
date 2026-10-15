@@ -128,11 +128,14 @@ textarea { resize: vertical; }
   display: flex;
   justify-content: space-between;
   gap: 8px;
-  padding: 8px 0;
+  padding: 8px 12px;
   font-size: 0.95rem;
+  border-radius: 6px;
 }
-.summary-totals div + div { border-top: 1px solid var(--border); }
-.summary-totals dt { color: var(--muted); }
+.summary-totals div + div { margin-top: 6px; }
+.summary-totals div:nth-child(1) { background: #e3f6e9; border: 1px solid #c3e8cf; }
+.summary-totals div:nth-child(2) { background: #fce8f1; border: 1px solid #f5cbdd; }
+.summary-totals dt { color: #4b5563; }
 .summary-totals dd { margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; }
 
 .grand-total {
@@ -141,9 +144,10 @@ textarea { resize: vertical; }
   align-items: baseline;
   justify-content: space-between;
   gap: 0 8px;
-  margin-top: 6px;
-  padding-top: 12px;
-  border-top: 2px solid var(--border);
+  padding: 10px 12px;
+  border-radius: 6px;
+  background: #e2eefc;
+  border: 1px solid #c2d9f5;
 }
 .grand-total-label { font-weight: 700; font-size: 1rem; }
 .grand-total-value { font-weight: 800; font-size: 1.7rem; line-height: 1.1; font-variant-numeric: tabular-nums; }
@@ -173,8 +177,8 @@ textarea { resize: vertical; }
   .invoice-form .card { padding-top: 8px; padding-bottom: 8px; margin-bottom: 10px; }
   .invoice-form .field { margin-bottom: 5px; }
   .invoice-form input, .invoice-form textarea, .invoice-form select { padding-top: 6px; padding-bottom: 6px; }
-  .summary-totals div { padding: 5px 0; }
-  .grand-total { padding-top: 8px; }
+  .summary-totals div { padding: 5px 12px; }
+  .grand-total { padding-top: 7px; padding-bottom: 7px; }
 }
 
 /* Wide screens: stretch the form to the bottom of the window so both columns end on the same line */
@@ -200,7 +204,8 @@ textarea { resize: vertical; }
   .invoice-form .field-label { font-size: 0.9rem; }
   .invoice-form input, .invoice-form textarea, .invoice-form select { padding: 10px 12px; font-size: 1rem; }
   .vehicle-header-right, .summary-totals div { font-size: 1rem; }
-  .summary-totals div { padding: 12px 0; }
+  .summary-totals div { padding: 12px 14px; }
+  .grand-total { padding: 12px 14px; }
   .invoice-form .form-sidebar h2 { margin-bottom: 14px; }
   .amount-words { font-size: 0.92rem; }
   .form-sidebar .form-actions .btn { padding: 12px 16px; font-size: 1rem; }

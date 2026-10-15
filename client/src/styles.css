@@ -178,6 +178,33 @@ textarea { resize: vertical; }
   .amount-words { margin-bottom: 8px; }
 }
 
+/* Wide screens: stretch the form to the bottom of the window so both columns end on the same line */
+@media (min-width: 1101px) {
+  .app:has(.invoice-form) { min-height: 100vh; display: flex; flex-direction: column; }
+  .content:has(.invoice-form) { flex: 1; width: 100%; display: flex; flex-direction: column; }
+  .invoice-form { flex: 1; display: flex; flex-direction: column; }
+  .form-layout { flex: 1; }
+  .form-main { display: flex; flex-direction: column; }
+  .invoice-form .form-sidebar { margin-bottom: 0; }
+  .form-main > .row.cards { flex: 1 1 auto; }
+  .form-main > .card:last-child { flex: 1 1 auto; display: flex; flex-direction: column; margin-bottom: 0; }
+  .form-main > .row.cards > .card { display: flex; flex-direction: column; justify-content: space-between; }
+  .form-main .vehicle { flex: 1 1 auto; display: flex; flex-direction: column; justify-content: space-between; }
+}
+
+/* Tall screens: larger controls instead of large empty gaps */
+@media (min-width: 1101px) and (min-height: 850px) {
+  .invoice-form .form-title { font-size: 1.3rem; margin-bottom: 14px; }
+  .invoice-form h2 { font-size: 1.2rem; }
+  .invoice-form .card { padding: 14px 18px; }
+  .invoice-form .field { gap: 5px; }
+  .invoice-form .field-label { font-size: 0.9rem; }
+  .invoice-form input, .invoice-form textarea, .invoice-form select { padding: 10px 12px; font-size: 1rem; }
+  .vehicle-header-right, .summary-totals div { font-size: 1rem; }
+  .amount-words { font-size: 0.92rem; }
+  .form-sidebar .form-actions .btn { padding: 12px 16px; font-size: 1rem; }
+}
+
 @media (max-width: 1100px) {
   .form-layout { grid-template-columns: 1fr; }
 }

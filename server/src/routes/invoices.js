@@ -52,7 +52,8 @@ invoicesRouter.get('/', async (req, res) => {
 
   const [data, total] = await Promise.all([
     Invoice.find(filter)
-      .sort({ invoiceDate: -1, createdAt: -1 })
+      .sort({ invoiceNumber: 1 })
+      .collation({ locale: 'en', numericOrdering: true })
       .skip((page - 1) * limit)
       .limit(limit)
       .select('invoiceNumber invoiceDate purchaser.name items.make items.model items.chassisNumber totalAmountIncludingVat paymentMode')

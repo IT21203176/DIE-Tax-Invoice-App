@@ -66,8 +66,13 @@ function toFormState(invoice) {
       amountIncludingVat: toMoneyInput(item.amountIncludingVat),
       unitPrice: toMoneyInput(item.unitPrice),
     })),
-    paymentMode: invoice.paymentMode ?? '',
+    paymentMode: matchPaymentMode(invoice.paymentMode),
   };
+}
+
+function matchPaymentMode(value) {
+  if (!value) return '';
+  return PAYMENT_MODES.find((mode) => mode.toLowerCase() === value.toLowerCase()) ?? value;
 }
 
 export default function InvoiceFormPage() {
@@ -125,6 +130,12 @@ export default function InvoiceFormPage() {
   }, [isEdit, form.invoiceDate]);
 
   const totals = useMemo(() => computeTotals(form.items, vatRate), [form.items, vatRate]);
+
+  // Keeps an older invoice's custom payment mode selectable when editing it.
+  const paymentOptions =
+    form.paymentMode && !PAYMENT_MODES.includes(form.paymentMode)
+      ? [...PAYMENT_MODES, form.paymentMode]
+      : PAYMENT_MODES;
 
   const setField = (name, value) => setForm((prev) => ({ ...prev, [name]: value }));
 
@@ -307,19 +318,26 @@ export default function InvoiceFormPage() {
               <dt>VAT @ {vatRate}%</dt>
               <dd>{formatMoney(totals.vatAmount)}</dd>
             </div>
-            <div className="grand">
-              <dt>Total incl. VAT</dt>
-              <dd>{formatMoney(totals.totalAmountIncludingVat)}</dd>
-            </div>
           </dl>
-          <p className="amount-words">{totals.totalAmountInWords}</p>
+          <div className="grand-total">
+            <span className="grand-total-label">Total incl. VAT</span>
+            <span className="grand-total-value">
+              <small>Rs.</small>
+              {formatMoney(totals.totalAmountIncludingVat)}
+            </span>
+          </div>
+          <p className="amount-words">{totals.totalAmountInWords.toLowerCase()}</p>
 
           <Field label="Mode of payment" required>
-            <input list="payment-modes" required value={form.paymentMode}
-              onChange={(e) => setField('paymentMode', e.target.value)} />
+            <select required value={form.paymentMode}
+              onChange={(e) => setField('paymentMode', e.target.value)}>
+              <option value="">Select...</option>
+              {paymentOptions.map((mode) => <option key={mode} value={mode}>{mode}</option>)}
+            </select>
           </Field>
           <Field label="Other information" className="grow">
             <textarea rows={2} value={form.otherInformation}
+              placeholder="Notes that should appear on the invoice"
               onChange={(e) => setField('otherInformation', e.target.value)} />
           </Field>
 
@@ -332,7 +350,6 @@ export default function InvoiceFormPage() {
         </aside>
       </div>
 
-      <datalist id="payment-modes">{PAYMENT_MODES.map((v) => <option key={v} value={v} />)}</datalist>
       <datalist id="vehicle-statuses">{VEHICLE_STATUSES.map((v) => <option key={v} value={v} />)}</datalist>
       <datalist id="fuel-types">{FUEL_TYPES.map((v) => <option key={v} value={v} />)}</datalist>
     </form>

@@ -75,6 +75,27 @@ function matchPaymentMode(value) {
   return PAYMENT_MODES.find((mode) => mode.toLowerCase() === value.toLowerCase()) ?? value;
 }
 
+// Enter moves to the next field in tab order (Shift+Enter to the previous) instead of submitting the form.
+// Tab on a date input does the same, rather than stepping through its day/month/year parts.
+function moveFocusOnKey(event) {
+  const { target } = event;
+  if (event.nativeEvent.isComposing) return;
+  if (!(target instanceof HTMLInputElement || target instanceof HTMLSelectElement)) return;
+  const isEnter = event.key === 'Enter';
+  const isDateTab = event.key === 'Tab' && target.type === 'date';
+  if (!isEnter && !isDateTab) return;
+  event.preventDefault();
+
+  const fields = [...event.currentTarget.querySelectorAll('input, select, textarea')].filter(
+    (el) => el.tabIndex >= 0 && !el.disabled && !el.readOnly
+  );
+  const isAfterTarget = (el) => target.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_FOLLOWING;
+  const next = event.shiftKey
+    ? fields.filter((el) => el !== target && !isAfterTarget(el)).at(-1)
+    : fields.find(isAfterTarget);
+  next?.focus();
+}
+
 export default function InvoiceFormPage() {
   const { id } = useParams();
   const isEdit = Boolean(id);
@@ -177,7 +198,7 @@ export default function InvoiceFormPage() {
   if (loading) return <p>Loading invoice…</p>;
 
   return (
-    <form className="invoice-form" onSubmit={handleSubmit}>
+    <form className="invoice-form" onSubmit={handleSubmit} onKeyDown={moveFocusOnKey}>
       <h1 className="form-title">{isEdit ? `Edit tax invoice ${form.invoiceNumber}` : 'New tax invoice'}</h1>
 
       <div className="form-layout">
@@ -214,7 +235,7 @@ export default function InvoiceFormPage() {
           </section>
 
           <div className="row row-2 cards">
-            <PartySection title="Supplier" tinRequired value={form.supplier}
+            <PartySection title="Supplier" tinRequired skipTab value={form.supplier}
               onChange={(name, value) => setPartyField('supplier', name, value)} />
             <PartySection title="Purchaser" value={form.purchaser}
               onChange={(name, value) => setPartyField('purchaser', name, value)} />
@@ -347,23 +368,28 @@ export default function InvoiceFormPage() {
   );
 }
 
-function PartySection({ title, value, onChange, tinRequired = false }) {
+// skipTab leaves the fields clickable but out of the Tab/Enter order (used for the auto-filled supplier).
+function PartySection({ title, value, onChange, tinRequired = false, skipTab = false }) {
+  const tabIndex = skipTab ? -1 : undefined;
   return (
     <section className="card">
       <h2>{title}</h2>
       <div className="row row-2">
         <Field label="TIN" required={tinRequired}>
-          <input required={tinRequired} value={value.tin} onChange={(e) => onChange('tin', e.target.value)} />
+          <input required={tinRequired} tabIndex={tabIndex} value={value.tin}
+            onChange={(e) => onChange('tin', e.target.value)} />
         </Field>
         <Field label="Telephone">
-          <input type="tel" value={value.telephone} onChange={(e) => onChange('telephone', e.target.value)} />
+          <input type="tel" tabIndex={tabIndex} value={value.telephone}
+            onChange={(e) => onChange('telephone', e.target.value)} />
         </Field>
       </div>
       <Field label="Name" required>
-        <input required value={value.name} onChange={(e) => onChange('name', e.target.value)} />
+        <input required tabIndex={tabIndex} value={value.name} onChange={(e) => onChange('name', e.target.value)} />
       </Field>
       <Field label="Address" required>
-        <input required value={value.address} onChange={(e) => onChange('address', e.target.value)} />
+        <input required tabIndex={tabIndex} value={value.address}
+          onChange={(e) => onChange('address', e.target.value)} />
       </Field>
     </section>
   );

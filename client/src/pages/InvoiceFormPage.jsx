@@ -8,7 +8,7 @@ import {
 } from '../../../shared/invoiceMath.js';
 import { api } from '../api.js';
 import Field from '../components/Field.jsx';
-import MoneyInput from '../components/MoneyInput.jsx';
+import MoneyInput, { formatMoneyInput } from '../components/MoneyInput.jsx';
 
 const PAYMENT_MODES = ['Cash', 'Cheque', 'Bank Transfer', 'Credit Card', 'Leasing', 'Other'];
 const VEHICLE_STATUSES = ['Brand New', 'Unregistered', 'Registered', 'Reconditioned'];
@@ -156,15 +156,6 @@ export default function InvoiceFormPage() {
       unitPrice: value === '' ? item.unitPrice : unitPriceFromVatInclusive(value, vatRate).toFixed(2),
     }));
 
-  // A manually changed unit price no longer matches the VAT-inclusive amount, so clear it.
-  const setItemUnitPrice = (index, value) =>
-    updateItem(index, (item) => ({
-      unitPrice: value,
-      amountIncludingVat: Number(value) === Number(item.unitPrice) ? item.amountIncludingVat : '',
-    }));
-
-  const addItem = () => setForm((prev) => ({ ...prev, items: [...prev.items, emptyItem()] }));
-
   const removeItem = (index) =>
     setForm((prev) => ({ ...prev, items: prev.items.filter((_, i) => i !== index) }));
 
@@ -230,15 +221,10 @@ export default function InvoiceFormPage() {
           </div>
 
           <section className="card">
-            <div className="section-header">
-              <h2>Vehicles</h2>
-              <button type="button" className="btn secondary small" onClick={addItem}>+ Add vehicle</button>
-            </div>
-
             {form.items.map((item, index) => (
               <div className="vehicle" key={index}>
                 <div className="vehicle-header">
-                  <h3>{form.items.length > 1 ? `Vehicle ${index + 1}` : 'Vehicle'}</h3>
+                  <h2>{form.items.length > 1 ? `Vehicle ${index + 1}` : 'Vehicle'}</h2>
                   <div className="vehicle-header-right">
                     <span className="muted">Amount excl. VAT:</span>
                     <strong>{formatMoney(totals.items[index]?.amount)}</strong>
@@ -292,14 +278,15 @@ export default function InvoiceFormPage() {
                     <input type="number" min="1" step="1" required value={item.quantity}
                       onChange={(e) => setItemField(index, 'quantity', e.target.value)} />
                   </Field>
-                  <Field label="Incl. VAT (Rs.)">
-                    <MoneyInput value={item.amountIncludingVat}
+                  <Field label="Total Amount Incl. VAT (Rs.)" required>
+                    <MoneyInput value={item.amountIncludingVat} required={!item.unitPrice}
                       title={`Amount including VAT (${vatRate}%). Fills the unit price automatically.`}
                       onChange={(value) => setItemAmountIncludingVat(index, value)} />
                   </Field>
-                  <Field label="Unit price (Rs.)" required>
-                    <MoneyInput required value={item.unitPrice}
-                      onChange={(value) => setItemUnitPrice(index, value)} />
+                  <Field label="Unit Price (Rs.)">
+                    <input className="readonly money" readOnly tabIndex={-1}
+                      value={formatMoneyInput(item.unitPrice)}
+                      title="Calculated from the total amount including VAT" />
                   </Field>
                 </div>
               </div>

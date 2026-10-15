@@ -34,6 +34,7 @@ h3 { font-size: 0.95rem; margin: 0; }
 .topbar a.active { color: #fff; background: rgba(255, 255, 255, 0.14); }
 
 .content { max-width: 1280px; margin: 0 auto; padding: 24px; }
+.content.wide { max-width: none; padding: 20px 28px; }
 
 .page-header {
   display: flex;
@@ -86,29 +87,32 @@ input.money { text-align: right; font-variant-numeric: tabular-nums; }
 textarea { resize: vertical; }
 
 /* Invoice entry form */
-.invoice-form .form-title { font-size: 1.25rem; margin: 0 0 14px; }
+.invoice-form .form-title { font-size: 1.35rem; margin: 0 0 16px; }
 .form-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 290px;
-  gap: 14px;
-  align-items: start;
+  grid-template-columns: minmax(0, 1fr) 380px;
+  gap: 16px;
+  align-items: stretch;
 }
 .form-main { min-width: 0; }
-.form-sidebar { position: sticky; top: 14px; }
+/* Stretches to the height of the main column; the "Other information" box takes the spare space. */
+.form-sidebar { display: flex; flex-direction: column; }
+.form-sidebar .field.grow { flex: 1; }
+.form-sidebar .field.grow textarea { flex: 1; min-height: 90px; resize: none; }
 
-.invoice-form .card { padding: 12px 14px; margin-bottom: 14px; }
-.invoice-form h2 { font-size: 0.85rem; font-weight: 700; margin: 0 0 8px; }
-.invoice-form .section-header { margin-bottom: 8px; }
+.invoice-form .card { padding: 16px 18px; margin-bottom: 16px; }
+.invoice-form h2 { font-size: 0.95rem; font-weight: 700; margin: 0 0 10px; }
+.invoice-form .section-header { margin-bottom: 10px; }
 .invoice-form .section-header h2 { margin: 0; }
-.invoice-form .field { gap: 3px; margin-bottom: 8px; }
-.invoice-form .field-label { font-size: 0.72rem; font-weight: 500; color: var(--muted); }
-.invoice-form input, .invoice-form textarea { padding: 6px 8px; font-size: 0.85rem; border-radius: 5px; }
+.invoice-form .field { gap: 4px; margin-bottom: 10px; }
+.invoice-form .field-label { font-size: 0.8rem; font-weight: 500; color: var(--muted); }
+.invoice-form input, .invoice-form textarea { padding: 8px 10px; font-size: 0.95rem; border-radius: 6px; }
 .invoice-form input::placeholder, .invoice-form textarea::placeholder { color: #a0aab6; }
 
-.row { display: grid; gap: 0 10px; }
+.row { display: grid; gap: 0 12px; }
 .row-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .row-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-.row.cards { gap: 0 14px; }
+.row.cards { gap: 0 16px; }
 .vehicle-row-1 { grid-template-columns: 1fr 1fr 1.15fr 1.5fr 1.5fr; }
 .vehicle-row-2 { grid-template-columns: 1fr 1fr 0.7fr 1.1fr 0.55fr 1.25fr 1.25fr; }
 
@@ -116,13 +120,13 @@ textarea { resize: vertical; }
   background: #f8fafc;
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 10px 12px 4px;
-  margin-bottom: 10px;
+  padding: 12px 14px 4px;
+  margin-bottom: 12px;
 }
 .vehicle:last-child { margin-bottom: 0; }
-.vehicle-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
-.vehicle-header h3 { font-size: 0.85rem; }
-.vehicle-header-right { display: flex; align-items: center; gap: 6px; font-size: 0.8rem; }
+.vehicle-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.vehicle-header h3 { font-size: 0.92rem; }
+.vehicle-header-right { display: flex; align-items: center; gap: 6px; font-size: 0.88rem; }
 .muted { color: var(--muted); }
 
 .summary-totals { margin: 0 0 6px; }
@@ -130,18 +134,17 @@ textarea { resize: vertical; }
   display: flex;
   justify-content: space-between;
   gap: 8px;
-  padding: 7px 0;
+  padding: 9px 0;
   border-bottom: 1px solid var(--border);
-  font-size: 0.85rem;
+  font-size: 0.95rem;
 }
 .summary-totals dd { margin: 0; font-variant-numeric: tabular-nums; }
-.summary-totals .grand { font-weight: 700; font-size: 0.95rem; border-bottom: none; }
-.amount-words { font-size: 0.72rem; font-style: italic; color: var(--muted); margin: 0 0 12px; }
-.form-sidebar .form-actions { margin: 12px 0 0; }
+.summary-totals .grand { font-weight: 700; font-size: 1.08rem; border-bottom: none; }
+.amount-words { font-size: 0.8rem; font-style: italic; color: var(--muted); margin: 0 0 14px; }
+.form-sidebar .form-actions { margin: 14px 0 0; }
 
 @media (max-width: 1100px) {
   .form-layout { grid-template-columns: 1fr; }
-  .form-sidebar { position: static; }
 }
 @media (max-width: 900px) {
   .row-4, .vehicle-row-1, .vehicle-row-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }

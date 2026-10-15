@@ -1,6 +1,6 @@
-export default function Field({ label, required, hint, children }) {
+export default function Field({ label, required, hint, className, children }) {
   return (
-    <label className="field">
+    <label className={className ? `field ${className}` : 'field'}>
       <span className="field-label">
         {label}
         {required && <span className="required">*</span>}

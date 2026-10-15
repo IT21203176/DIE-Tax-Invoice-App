@@ -1,12 +1,9 @@
-import { NavLink, Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import { NavLink, Navigate, Route, Routes } from 'react-router-dom';
 import InvoiceFormPage from './pages/InvoiceFormPage.jsx';
 import InvoiceListPage from './pages/InvoiceListPage.jsx';
 import InvoiceViewPage from './pages/InvoiceViewPage.jsx';
 
 export default function App() {
-  const { pathname } = useLocation();
-  const isFormPage = /^\/invoices\/(new|[^/]+\/edit)\/?$/.test(pathname);
-
   return (
     <div className="app">
       <header className="topbar">
@@ -17,7 +14,7 @@ export default function App() {
         </nav>
       </header>
 
-      <main className={isFormPage ? 'content wide' : 'content'}>
+      <main className="content">
         <Routes>
           <Route path="/" element={<Navigate to="/invoices" replace />} />
           <Route path="/invoices" element={<InvoiceListPage />} />

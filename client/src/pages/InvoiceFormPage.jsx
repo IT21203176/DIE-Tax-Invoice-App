@@ -247,7 +247,7 @@ export default function InvoiceFormPage() {
                     <input required value={item.model} onChange={(e) => setItemField(index, 'model', e.target.value)} />
                   </Field>
                   <Field label="Status">
-                    <input list="vehicle-statuses" value={item.status} placeholder="Unregistered"
+                    <input list="vehicle-statuses" value={item.status} placeholder="e.g. Unregistered"
                       onChange={(e) => setItemField(index, 'status', e.target.value)} />
                   </Field>
                   <Field label="Chassis no" required>
@@ -319,7 +319,7 @@ export default function InvoiceFormPage() {
               onChange={(e) => setField('paymentMode', e.target.value)} />
           </Field>
           <Field label="Other information" className="grow">
-            <textarea rows={3} value={form.otherInformation}
+            <textarea rows={2} value={form.otherInformation}
               onChange={(e) => setField('otherInformation', e.target.value)} />
           </Field>
 
